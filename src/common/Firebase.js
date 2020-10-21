@@ -3,16 +3,16 @@ import "firebase/firestore";
 
 
 // Credenciales
+// Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: 'AIzaSyBOrXlivPALqIZqybw8QvdaV0V0XLgfNQw',
-  authDomain: 'xiinbalkiin-4b927.firebaseapp.com',
-  databaseURL: 'https://xiinbalkiin-4b927.firebaseio.com',
-  projectId: 'xiinbalkiin-4b927',
-  storageBucket: 'xiinbalkiin-4b927.appspot.com',
-  messagingSenderId: '1036598837550',
-  appId: '1:1036598837550:web:8c2541f91a04aad4c97abf',
+  apiKey: "AIzaSyCH8kAYuTLIxW6G4ieSXxHKGTmU8WCx60o",
+  authDomain: "xiinbalkiin-a19ee.firebaseapp.com",
+  databaseURL: "https://xiinbalkiin-a19ee.firebaseio.com",
+  projectId: "xiinbalkiin-a19ee",
+  storageBucket: "xiinbalkiin-a19ee.appspot.com",
+  messagingSenderId: "44096971204",
+  appId: "1:44096971204:web:280e84752fbc86503a8491"
 };
-
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 
