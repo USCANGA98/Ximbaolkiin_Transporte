@@ -34,6 +34,26 @@
               dense
             ></v-text-field>
           </v-col>
+          <v-col cols="12" class="mb-0 mt-0 pb-0 pt-0">
+            <v-btn
+              class="mb-5"
+              block
+              color="purple darken-4"
+              dark
+              @click="$refs.boton.click()"
+            >
+              <v-icon left>mdi-image-outline</v-icon> Adjuntar foto de la
+              estacion
+            </v-btn>
+            <input
+              type="file"
+              accept="image/*"
+              ref="boton"
+              @change="processImage($event)"
+              class="d-none"
+            />
+            <v-img v-if="image != '' " :src="image"></v-img>
+          </v-col>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -44,7 +64,7 @@
             color="green darken-1"
             depressed
             dark
-            @click="enviarDatosFirebase()"
+            @click="enviarDatosFirebase"
           >
             Guardar estacion
           </v-btn>
@@ -55,7 +75,7 @@
 </template>
 
 <script>
-import { db } from "../../common/Firebase";
+import { db, storage } from "../../common/Firebase";
 import { firestore } from "firebase/app";
 export default {
   props: {
@@ -66,13 +86,17 @@ export default {
   },
   data: () => ({
     estacion: {
+      imgUrl: "",
       nombre: "",
       latitud: "",
       longitud: "",
     },
+    image: "",
+    imageFile: ""
   }),
   methods: {
-    enviarDatosFirebase() {
+    async enviarDatosFirebase() {
+      await this.subirImagen();
       const coordenadas = new firestore.GeoPoint(
         parseFloat(this.estacion.latitud),
         parseFloat(this.estacion.longitud)
@@ -80,6 +104,7 @@ export default {
       const data = {
         nombre: this.estacion.nombre,
         coordenadas: coordenadas,
+        urlImagen: this.estacion.imgUrl,
       };
       db.collection("estaciones")
         .add(data)
@@ -87,7 +112,29 @@ export default {
           this.$emit("cancel");
         });
     },
-  },
+    processImage(e) {
+      this.imageFile = e.target.files[0];
+      const reader = new FileReader();
+      reader.readAsDataURL(this.imageFile);
+      reader.onload = async (e) => {
+        this.image = await e.target.result;
+      };
+    },
+    async subirImagen(){
+      try {
+
+        const upload  = await storage.child(`estaciones/${this.imageFile.name}`).put(this.imageFile);
+        const urlImg = await upload.ref.getDownloadURL();
+        console.log(urlImg);
+        this.estacion.imgUrl = urlImg;
+      } catch(error){
+        console.log(error);
+      }
+    },
+
+  }
+  
+
 };
 </script>
 

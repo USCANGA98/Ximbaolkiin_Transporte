@@ -1,5 +1,6 @@
 import firebase from 'firebase/app';
 import "firebase/firestore";
+import "firebase/storage";
 
 
 // Credenciales
@@ -15,10 +16,10 @@ const firebaseConfig = {
 };
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
-
 // Instancia que nos permite manejar la base de datos
 // de firestore
 const db = firebase.firestore();
+const storage = firebase.storage().ref();
 
 
-export { db };
+export { db, storage };
